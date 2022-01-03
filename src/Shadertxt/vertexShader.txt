@@ -1,0 +1,26 @@
+#version 450 core
+
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec2 texCoords;
+//layout(location = 2) in vec2 offset;
+layout(location = 3) in float rand;
+layout(location = 4) uniform vec2 dims;
+
+
+layout(location = 0) uniform mat4 projectionmatrix;
+layout(location = 1) uniform mat4 transformationmatrix;
+layout(location = 2) uniform mat4 viewmatrix;
+
+out vec2 uv;
+
+//flat out int InstanceID;
+
+void main(void) {
+
+      // InstanceID = gl_InstanceID;
+      uv = texCoords * vec2(dims.x,dims.y);
+
+      //gl_Position = vec4(position.x,position.y,0,1.0);
+      gl_Position = projectionmatrix * viewmatrix * transformationmatrix * vec4(position.xyz,1.0);
+
+}

@@ -1,0 +1,42 @@
+#version 450 core
+
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec2 texCoords;
+layout(location = 2) in vec3 normal;
+
+layout(location = 0) uniform mat4 projectionmatrix;
+layout(location = 1) uniform mat4 transformationmatrix;
+layout(location = 2) uniform mat4 viewmatrix;
+
+layout(location = 3) uniform vec3 cameraPosition;
+layout(location = 4) uniform vec3 lightPosition;
+
+out vec2 uv;
+out vec3 surfaceNormal;
+out vec3 toLightVector;
+out vec3 toCameraVector;
+//out vec3 reflectedVector;
+
+out vec3 RNormal;
+out vec3 RPosition;
+out vec3 RCameraPosition;
+
+void main(void) {
+
+vec4 worldPosition = transformationmatrix * vec4(position,1.0);
+gl_Position = projectionmatrix * viewmatrix * worldPosition;
+
+uv = texCoords;
+surfaceNormal = (transformationmatrix * vec4(normal,0.0)).xyz;
+toLightVector = lightPosition - worldPosition.xyz;
+toCameraVector = (inverse(viewmatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
+
+RCameraPosition = cameraPosition;
+RNormal = mat3(transpose(inverse(transformationmatrix))) * normal;
+RPosition = vec3(transformationmatrix * vec4(position,1.0));
+
+//vec3 unitNormal = normalize(normal);
+//vec3 viewVector = normalize(worldPosition.xyz - cameraPosition);
+//reflectedVector = reflect(viewVector, unitNormal);
+
+}

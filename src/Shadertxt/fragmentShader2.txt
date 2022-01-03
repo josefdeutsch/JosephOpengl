@@ -1,0 +1,18 @@
+#version 450 core
+
+layout (location = 0) out vec4 out_Color;
+layout (binding = 3) uniform sampler2D tex_mirror;
+layout (binding = 4) uniform sampler2D black;
+
+in vec2 pass_uv;
+in vec4 clipSpace;
+in vec4 gl_FragCoord;
+
+void main(void){
+
+      vec2 ndc = (clipSpace.xy/clipSpace.w)/2.0 + 0.5;
+      vec2 reflection = vec2(ndc.x,-ndc.y);
+     // out_Color = mix(texture(tex_mirror,reflection),texture(black,pass_uv), 0.5);
+      out_Color = texture(tex_mirror,reflection) * 0.7;
+}
+

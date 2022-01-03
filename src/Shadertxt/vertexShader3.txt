@@ -1,0 +1,18 @@
+#version 450 core
+
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec2 texCoords;
+layout(location = 2) in vec3 normal;
+
+layout(location = 0) uniform mat4 projectionmatrix;
+layout(location = 1) uniform mat4 transformationmatrix;
+layout(location = 2) uniform mat4 viewmatrix;
+
+out vec2 pass_uv;
+
+void main(void) {
+
+  pass_uv = texCoords;
+  gl_Position = projectionmatrix * viewmatrix * transformationmatrix * vec4(position,1.0);
+
+}
